@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Dorm Map</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&family=Nunito:wght@700&display=swap');
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:#eef2f7;
+font-family:'Nunito',sans-serif;
+width:100%;
+}
+
+/* -------- HEADER -------- */
+
+.header{
+width:100%;
+background:#2c4a6e;
+color:white;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:24px 40px;
+}
+
+.header h1{
+font-size:2.4rem;
+}
+
+.header-right{
+display:flex;
+align-items:center;
+gap:16px;
+}
+
+#timeframe{
+padding:8px 12px;
+border-radius:8px;
+border:none;
+font-size:1rem;
+font-family:'Nunito',sans-serif;
+}
+
+/* -------- STATUS -------- */
+
+.status{
+margin:20px auto;
+background:white;
+border:2px solid #b8cfe8;
+border-radius:10px;
+padding:10px 26px;
+font-size:1rem;
+color:#555;
+width:fit-content;
+}
+
+.status code{
+font-family:'DM Mono',monospace;
+color:#c0593a;
+font-size:1.1rem;
+}
+
+/* -------- MAP -------- */
+
+.map-wrap{
+position:relative;
+width:95%;
+margin:auto;
+}
+
+.map-wrap img{
+width:100%;
+display:block;
+border-radius:16px;
+pointer-events:none;
+user-select:none;
+}
+
+/* -------- DORM ZONES -------- */
+
+.dorm-zone{
+position:absolute;
+cursor:pointer;
+border-radius:10px;
+border:2px solid transparent;
+transition:background .2s,border-color .2s,box-shadow .2s;
+}
+
+.dorm-zone:hover{
+background:rgba(100,160,210,.3);
+border-color:rgba(74,112,150,.6);
+box-shadow:0 0 12px rgba(74,112,150,.35);
+}
+
+.dorm-zone.active{
+background:rgba(192,89,58,.25);
+border-color:rgba(192,89,58,.8);
+box-shadow:0 0 16px rgba(192,89,58,.4);
+}
+
+/* -------- NAV BUTTONS -------- */
+
+.nav-btn{
+position:fixed;
+top:50%;
+transform:translateY(-50%);
+background:white;
+border:2px solid #b8cfe8;
+border-radius:50%;
+width:48px;
+height:48px;
+font-size:1.3rem;
+color:#2c4a6e;
+cursor:pointer;
+}
+
+.nav-btn:hover{
+background:#2c4a6e;
+color:white;
+border-color:#2c4a6e;
+}
+
+.left{left:20px;}
+.right{right:20px;}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+<h1>Dorm Map</h1>
+
+<div class="header-right">
+<select id="timeframe">
+<option>This Week</option>
+<option>This Month</option>
+<option>This Semester</option>
+</select>
+</div>
+</div>
+
+<div class="status">
+Dorm Chosen: <code id="display"></code>
+</div>
+
+<button class="nav-btn left" onclick="location.href='duke_dashboard_new_design.html'">&#8592;</button>
+
+<div class="map-wrap" id="map">
+<img src="Map2.png" alt="Campus Map">
+</div>
+
+<button class="nav-btn right" onclick="goNext()">&#8594;</button>
+
+<script>
+
+const params=new URLSearchParams(window.location.search);
+const selectedDorm=params.get('dorm');
+let dorm_var=selectedDorm;
+
+const dorms=[
+{label:"Bell Tower",value:"bell_tower",l:17,t:8,w:20,h:26},
+{label:"Randolph",value:"randolph",l:36,t:14,w:17,h:20},
+{label:"Trinity",value:"trinity",l:3,t:28,w:16,h:20},
+{label:"Southgate",value:"southgate",l:11,t:47,w:22,h:24},
+{label:"Blackwell",value:"blackwell",l:40,t:35,w:20,h:22},
+{label:"Gilbert-Addoms",value:"gilbert_addoms",l:30,t:60,w:24,h:24},
+{label:"Pegram",value:"pegram",l:60,t:10,w:15,h:20},
+{label:"Alspaugh",value:"alspaugh",l:59,t:30,w:17,h:20},
+{label:"Giles",value:"giles",l:61,t:48,w:18,h:18},
+{label:"West House",value:"west_house",l:63.5,t:67,w:18,h:22},
+{label:"Bassett",value:"bassett",l:76,t:12,w:24,h:18},
+{label:"Brown",value:"brown",l:76,t:30,w:22,h:20},
+{label:"Wilson",value:"wilson",l:77,t:48,w:22,h:18}
+];
+
+const map=document.getElementById('map');
+const display=document.getElementById('display');
+
+function goNext(){
+const url=dorm_var?`ranking.html?dorm=${dorm_var}`:'ranking.html';
+location.href=url;
+}
+
+function setActive(index){
+document.querySelectorAll('.dorm-zone').forEach(z=>z.classList.remove('active'));
+const d=dorms[index];
+dorm_var=d.value;
+display.textContent=d.label;
+document.querySelectorAll('.dorm-zone')[index].classList.add('active');
+}
+
+dorms.forEach((d,i)=>{
+const zone=document.createElement('div');
+
+zone.className='dorm-zone';
+zone.style.left=d.l+'%';
+zone.style.top=d.t+'%';
+zone.style.width=d.w+'%';
+zone.style.height=d.h+'%';
+
+zone.addEventListener('click',()=>{
+if(dorm_var===d.value){
+dorm_var=null;
+display.textContent='';
+zone.classList.remove('active');
+return;
+}
+setActive(i);
+});
+
+map.appendChild(zone);
+});
+
+</script>
+
+</body>
+</html>
