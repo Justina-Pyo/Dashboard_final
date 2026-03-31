@@ -184,31 +184,34 @@
 
 <!-- GRAPHS -->
 <div class="panel" id="panel-graphs">
-  <div class="panel-title">📊 Utility Data &amp; Trends</div>
+  <div class="panel-title">Utility Data &amp; Trends</div>
   <div class="utility-row" style="margin-bottom:16px;">
     <button class="utl-btn active" id="gUtlElec" onclick="setGraphUtility('electricity',this)">⚡ Electricity</button>
     <button class="utl-btn" id="gUtlWater" onclick="setGraphUtility('water',this)">💧 Water</button>
   </div>
   <div class="graphs-grid">
     <div class="graph-card">
-      <h3>📊 Monthly Consumption — All Buildings</h3>
+      <h3>Monthly Consumption — All Buildings</h3>
       <div id="chartAllMonths" style="height:420px;"></div>
     </div>
     <div class="graph-card">
-      <h3>💰 Monthly Cost Comparison</h3>
+      <h3>Monthly Cost Comparison</h3>
       <div id="chartCost" style="height:420px;"></div>
     </div>
     <div class="graph-card">
-      <h3>🏆 Dec → Jan Change by Building</h3>
+      <h3>Dec → Jan Change by Building</h3>
       <div id="chartChange" style="height:420px;"></div>
     </div>
     <div class="graph-card">
-      <h3>📈 Per-Student Usage (Jan 2026)</h3>
+      <h3>Per-Student Usage (Jan 2026)</h3>
       <div id="chartPerStudent" style="height:420px;"></div>
+      <p class="chart-desc">
+If your dorm ranks high here, each student is using more energy than average—small daily changes can significantly reduce overall usage.
+</p>
     </div>
   </div>
   <div class="footnote">
-    <strong>💰 Cost Data:</strong> Electricity costs shown in $/month. Water &amp; Sewer costs combined. Alspaugh Hall uses real Duke billing data; other buildings estimated from consumption rates.
+    <strong> Cost Data:</strong> Electricity costs shown in $/month. Water &amp; Sewer costs combined. Alspaugh Hall uses real Duke billing data; other buildings estimated from consumption rates.
   </div>
 </div>
 
